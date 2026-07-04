@@ -14,6 +14,7 @@ header{
     justify-content: center;
     position: sticky;
     top: 0;
+    background:rgba(255, 255, 255);
 }
 nav{
     border-radius: 5em;
