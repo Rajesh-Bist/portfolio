@@ -43,18 +43,29 @@ nav ul li a {
 }
 aside{
     padding: 0.5em;
-    width: 30%;
+    width: 25%;
+    float: left;
     background: black;
     color: white;
 }
 .profile{
     width: 50%;
     border-radius: 50%;
+    float: left;
 }
 main{
-    width: 80%;
-    padding: 1em;
+    width: 100%;
+    padding: 0;
     margin: 0 auto;
+    border: 0;
+}
+#about{
+    width: 68%;
+    padding: 1em;
+    padding-top: 3.6em;
+    border: 0;
+    margin-left: 26%;
+    text-align: center;
 }
 
 
