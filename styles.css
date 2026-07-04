@@ -41,6 +41,16 @@ nav ul li a {
     color: white;
     font-weight: bold;
 }
+aside{
+    padding: 0.5em;
+    width: 30%;
+    background: black;
+    color: white;
+}
+.profile{
+    width: 50%;
+    border-radius: 50%;
+}
 main{
     width: 80%;
     padding: 1em;
