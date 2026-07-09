@@ -90,7 +90,7 @@ h3{
     align-items: center;
 }
 .project{
-    border:.5em solid black;
+    border:.2em solid black;
     border-radius: 2em;
     background: gray;
     margin: 1em;
@@ -100,6 +100,12 @@ h3{
     width: 25%;
     height: auto;
     border-radius: 1em;
+}
+footer{
+    width: 90%;
+    padding: 1em;
+    text-align: center;
+    background: linear-gradient(190deg,rgba(32, 30, 130, 1) 0%, rgba(15, 14, 123, 1) 23%, rgba(9, 9, 121, 1) 31%, rgba(235, 2, 6, 1) 100%, rgba(35, 21, 125, 1) 51%, rgba(0, 212, 255, 1) 81%);
 }
 
 
