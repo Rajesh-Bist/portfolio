@@ -1,80 +1,185 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="styles.css" type="text/css" />
-    <link rel="icon" href="favicon.ico" type="image/x-icon" />
-    <title>Portfolio | Rajesh Bist</title>
-  </head>
-  <body>
-    <header>
-      <nav>
-        <ul>
-          <li><a href="#about">About</a></li>
-          <li><a href="#projects">Projects</a></li>
-          <li><a href="#skills">Skills</a></li>
-          <li><a href="#contact">Contact</a></li>
-        </ul>
-      </nav>
-    </header>
-    <main>
-      <aside>
-        <img class="profile" src="profile.jpg" alt="Rajesh Bist" />
-          <h3>Rajesh Bist</h3>
-          <p>Web Developer</p>
-          <p>Email</p>
-          <p>LinkedIn</p>
-          <p>Contact Me</p>
-      </aside>
-      <section id="about">
-        <h2>About Me</h2>
-        <p>
-          I am Rajesh Bist, a student learning web development. I focus on practical, accessible HTML content that
-          works well across devices. This website is a simple portfolio showcasing my projects and skills. 
-        </p>
-      </section>
-      <h2 class="section-title">Featured Projects</h2>
-      <section id="projects">
-        <div class="project">
-          <img class="project-image" src="portfolio.jpg" alt="Portfolio" />
-          <h3>Portfolio</h3>
-          <p>A responsive web app built to show data clearly and efficiently.</p>
-          <a href="https://rajeshbist.com.np/"><button>View Project</button></a>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rajesh Bist — Frontend Developer in Training</title>
+<meta name="description" content="Portfolio of Rajesh Bist, a BIT student learning frontend development.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="site-topbar" style="position: sticky; top: 0; z-index: 60;">
+<header>
+  <div class="wrap topbar">
+    <ul class="top-nav">
+      <li><a href="#home" data-page="home">Home</a></li>
+      <li><a href="#about" data-page="about">About</a></li>
+      <li><a href="#skills" data-page="skills">Skills</a></li>
+      <li><a href="#projects" data-page="projects">Projects</a></li>
+      <li><a href="#contact" data-page="contact">Contact</a></li>
+    </ul>
+  </div>
+</header>
+<div class="subbar">
+  <div class="wrap">
+    <button class="subbar-btn" id="menuBtn" aria-label="Open sidebar menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+    <span class="subbar-label">Menu</span>
+  </div>
+</div>
+</div>
+
+<div class="sidebar-overlay" id="sidebarOverlay"></div>
+<nav class="sidebar" id="sidebar" aria-label="Main navigation">
+  <div class="sidebar-head">
+    <button class="sidebar-close" id="sidebarClose" aria-label="Close menu">✕</button>
+  </div>
+  <div class="sidebar-profile">
+    <div class="profile-avatar"><img src="profile.jpg" alt="Profile picture of Rajesh Bist"></div>
+    <div class="profile-name">Rajesh Bist</div>
+    <div class="profile-role">Web Developer</div>
+  </div>
+  <ul class="sidebar-links">
+    <li><a href="#home" data-page="home" data-num="00">Home</a></li>
+    <li><a href="#about" data-page="about" data-num="01">About</a></li>
+    <li><a href="#skills" data-page="skills" data-num="02">Skills</a></li>
+    <li><a href="#projects" data-page="projects" data-num="03">Projects</a></li>
+    <li><a href="#contact" data-page="contact" data-num="04">Contact</a></li>
+  </ul>
+  <div class="sidebar-foot">status: actively building</div>
+</nav>
+
+<main>
+
+  <div class="page" id="page-home">
+    <section class="hero">
+      <div class="wrap hero-grid">
+        <div>
+          <div class="eyebrow">status: actively building</div>
+          <h1>Rajesh Bist —<br>frontend developer <span class="accent">in training.</span></h1>
+          <p class="lede">BIT student learning frontend development, one project at a time. This portfolio is my first real build — made with HTML &amp; CSS. Four more projects are drafted and coming soon.</p>
+          <div class="hero-ctas">
+            <a href="#projects" data-page="projects" class="btn btn-primary">See projects →</a>
+            <a href="#contact" data-page="contact" class="btn btn-ghost">Get in touch</a>
+          </div>
         </div>
-        <div class="project">
-          <img class="project-image" src="#" alt="Coming Soon" />
-          <h3>Coming Soon....</h3>
-          <p></p>
-          <a href=""><button>View Project</button></a>
+        <div class="buildlog">
+          <div class="buildlog-head">
+            <span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+            <span style="margin-left:6px;">build-log.txt</span>
+          </div>
+          <div class="buildlog-body">
+            <div class="log-row"><span>HTML</span><span class="log-bar"><span class="log-fill" style="width:90%"></span></span><span class="log-status">solid</span></div>
+            <div class="log-row"><span>CSS</span><span class="log-bar"><span class="log-fill" style="width:80%"></span></span><span class="log-status">solid</span></div>
+            <div class="log-row"><span>JavaScript</span><span class="log-bar"><span class="log-fill partial" style="width:35%"></span></span><span class="log-status">in progress</span></div>
+            <div class="log-row"><span>React</span><span class="log-bar"><span class="log-fill queued" style="width:10%"></span></span><span class="log-status">queued</span></div>
+          </div>
         </div>
-        <div class="project">
-          <img class="project-image" src="#" alt="Coming Soon" />
-          <h3>Coming Soon....</h3>
-          <p></p>
-          <a href=""><button>View Project</button></a>
+      </div>
+    </section>
+  </div>
+
+  <div class="page" id="page-about">
+    <section class="page-section">
+      <div class="wrap about-grid">
+        <div>
+          <div class="eyebrow">about</div>
+          <h2 style="font-family:var(--font-display); font-size:1.8rem; margin-bottom:20px;">Learning in public.</h2>
+          <p>I'm currently studying BIT and teaching myself frontend development outside of class. I started with HTML and CSS, and I'm building this site as proof of what I've learned so far — not a finished product, but a real one.</p>
+          <p>My plan is simple: keep shipping small, honest projects. Four more are already drafted and will go live here as I finish them.</p>
         </div>
-      </section>
-      <h2 class="section-title">Skills</h2>
-      <section id="skills">
-        <ul>
-          <li><label>HTML</label> <br>
-          <progress value="100" max="100"></progress></li>
-          <li><label>CSS</label> <br>
-          <progress value="50" max="100"></progress></li>
-          <li><label>JavaScript</label> <br>
-          <progress value="0" max="100"></progress></li>
-        </ul>
-      </section>
-      <h2 class="section-title">Contact</h2>
-      <section id="contact">
-        <p>Email: <a href="mailto:rajeshbist2007@gmail.com" target="_blank">rajeshbist2007@gmail.com</a></p>
-        <p>Location: <a href="https://maps.app.goo.gl/fySanLka2naAYkAj6" target="_blank">Kanchanpur, Nepal</a></p>
-        <p>Availability: Open to opportunities</p>
-      </section>
-    </main>
-    <footer>
-      <p>© 2026 Rajesh Bist. A HTML portfolio page.</p>
-    </footer>
-  </body>
+        <div class="about-facts">
+          <div class="fact"><div class="fact-k">// currently</div><div class="fact-v">Studying BIT, learning frontend development</div></div>
+          <div class="fact"><div class="fact-k">// stack today</div><div class="fact-v">HTML, CSS</div></div>
+          <div class="fact"><div class="fact-k">// next up</div><div class="fact-v">JavaScript, then React</div></div>
+          <div class="fact"><div class="fact-k">// this site</div><div class="fact-v">Project 1 of 5 — built to track real progress</div></div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <div class="page" id="page-skills">
+    <section class="page-section">
+      <div class="wrap">
+        <div class="section-head">
+          <div class="eyebrow">skills</div>
+          <h2>What I can build with right now.</h2>
+        </div>
+        <div class="skills-grid">
+          <div class="skill-card"><div class="skill-name">HTML <span class="skill-tag learned">learned</span></div><p>Semantic structure, forms, accessibility basics — the foundation everything else sits on.</p></div>
+          <div class="skill-card"><div class="skill-name">CSS <span class="skill-tag learned">learned</span></div><p>Layout with Flexbox and Grid, responsive design, and styling from scratch — like this page.</p></div>
+          <div class="skill-card"><div class="skill-name">JavaScript <span class="skill-tag learning">learning</span></div><p>Currently working through the fundamentals: DOM manipulation, events, and logic.</p></div>
+          <div class="skill-card"><div class="skill-name">React <span class="skill-tag queued">queued</span></div><p>Next on the list, once JavaScript fundamentals are solid.</p></div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <div class="page" id="page-projects">
+    <section class="page-section">
+      <div class="wrap">
+        <div class="section-head">
+          <div class="eyebrow">projects</div>
+          <h2>One shipped. Four drafted.</h2>
+        </div>
+        <div class="projects-grid">
+          <div class="project-card">
+            <div class="project-tag">PROJECT_01 · live</div>
+            <h3>This portfolio</h3>
+            <p>My first real project — a fully responsive personal site built with HTML and CSS, deployed on GitHub Pages.</p>
+            <div class="project-links">
+              <a href="#home" data-page="home">View live ↗</a>
+              <a href="https://github.com/" target="_blank" rel="noopener">Source ↗</a>
+            </div>
+          </div>
+          <div class="project-card draft"><div class="project-tag">PROJECT_02 · drafting</div><h3>Coming soon</h3><p>Details to be added once this project is underway.</p></div>
+          <div class="project-card draft"><div class="project-tag">PROJECT_03 · drafting</div><h3>Coming soon</h3><p>Details to be added once this project is underway.</p></div>
+          <div class="project-card draft"><div class="project-tag">PROJECT_04 · drafting</div><h3>Coming soon</h3><p>Details to be added once this project is underway.</p></div>
+          <div class="project-card draft"><div class="project-tag">PROJECT_05 · drafting</div><h3>Coming soon</h3><p>Details to be added once this project is underway.</p></div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <div class="page" id="page-contact">
+    <section class="page-section">
+      <div class="wrap contact-grid">
+        <div class="contact-info">
+          <div class="eyebrow">contact</div>
+          <h2 style="font-family:var(--font-display); font-size:1.8rem; margin-bottom:20px;">Let's talk.</h2>
+          <p>Whether it's feedback on this site, a question about my progress, or an opportunity — my inbox is open.</p>
+          <ul class="contact-list">
+            <li><a href="mailto:rajeshbist2007@gmail.com"><span class="k">email</span> rajeshbist2007@gmail.com</a></li>
+            <li><a href="https://github.com/" target="_blank" rel="noopener"><span class="k">github</span> github.com/your-username</a></li>
+            <li><a href="https://linkedin.com/" target="_blank" rel="noopener"><span class="k">linkedin</span> linkedin.com/in/your-profile</a></li>
+          </ul>
+        </div>
+        <div>
+          <form class="contact-form" id="contactForm">
+            <div class="field"><label for="name">Name</label><input type="text" id="name" name="from_name" placeholder="Your name" required></div>
+            <div class="field"><label for="email">Email</label><input type="email" id="email" name="reply_to" placeholder="you@example.com" required></div>
+            <div class="field"><label for="message">Message</label><textarea id="message" name="message" placeholder="What's on your mind?" required></textarea></div>
+            <button type="submit" class="btn btn-primary" id="submitBtn">Send message</button>
+            <div class="form-status" id="formStatus"></div>
+          </form>
+        </div>
+      </div>
+    </section>
+  </div>
+
+</main>
+
+<footer>
+  © <span id="year"></span> Rajesh Bist — built with HTML &amp; CSS, deployed on GitHub Pages.
+</footer>
+
+<!-- EmailJS — see README.md for the 5-minute setup that makes the form actually deliver to your inbox -->
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+<script src="script.js"></script>
+</body>
 </html>

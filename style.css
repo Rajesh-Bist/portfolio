@@ -1,0 +1,876 @@
+/* ============================================================
+   RAJESH BIST — PORTFOLIO STYLES
+   ============================================================
+   New to this file? Read this first.
+
+   The page is a "single-page app": every section (Home, About,
+   Skills, Projects, Contact) lives in the same index.html, and
+   JavaScript (script.js) just shows/hides one at a time. So this
+   CSS is organised by which PART of the page it styles, in the
+   order things appear on screen:
+
+     1. Variables & resets   – colors/fonts used everywhere
+     2. Global helpers       – tiny classes reused all over
+     3. Header & top nav     – the bar pinned to the top
+     4. Sidebar              – the slide-out menu
+     5. Page switching       – show/hide animation between pages
+     6. Home page
+     7. About page
+     8. Skills page
+     9. Projects page
+     10. Contact page
+     11. Footer
+
+   Search for the ALL-CAPS section titles (e.g. "3. HEADER")
+   to jump straight to the part you want to change.
+
+   ------------------------------------------------------------
+   MOBILE-FIRST APPROACH
+   ------------------------------------------------------------
+   Every rule with NO media query around it is the MOBILE style —
+   write those first, for the smallest/plainest version of the
+   page. Then two media queries ADD ON TOP of that as the screen
+   gets bigger. We never write a big desktop layout and shrink it
+   down; we only build UP from mobile.
+
+   Only two breakpoints are used, in this order everywhere below:
+
+     1. MOBILE   (default, no media query)   → phones,   ~0–639px
+     2. TABLET   @media (min-width: 640px)   → tablets,  640–1023px
+     3. DESKTOP  @media (min-width: 1024px)  → laptops/desktops, 1024px+
+
+   Inside each section of this file you'll see the plain mobile
+   rules first, then (if needed) a "Tablet and up" block, then a
+   "Desktop and up" block — always in that order.
+   ============================================================ */
+
+
+/* ------------------------------------------------------------
+   1. VARIABLES & RESETS
+   ------------------------------------------------------------
+   CSS variables (the --name: value; lines below) are just
+   named values you can reuse anywhere with var(--name).
+   Change a color here once, and it updates everywhere it's used.
+   ------------------------------------------------------------ */
+:root {
+  /* Colors */
+  --bg: #0f1720;                    /* main page background (dark navy) */
+  --chalk: #eef2f7;                 /* main text color (off-white) */
+  --chalk-dim: #9aa7b8;             /* muted/secondary text color (gray) */
+  --amber: #ffb347;                 /* accent color #1 — used for highlights, active links, buttons */
+  --mint: #7fd8be;                  /* accent color #2 — used for links and "done" states */
+  --card-bg: rgba(255, 255, 255, 0.03);   /* faint background for cards/boxes */
+  --card-border: rgba(255, 255, 255, 0.10); /* faint border color for cards/boxes */
+  --sidebar-bg: #0b121a;            /* slightly darker background just for the sidebar */
+
+  /* Fonts (loaded from Google Fonts in index.html's <head>) */
+  --font-display: 'Space Grotesk', sans-serif; /* big headings */
+  --font-mono: 'JetBrains Mono', monospace;    /* labels, nav links, code-style text */
+  --font-body: 'Inter', sans-serif;            /* regular paragraph text */
+}
+
+/* Reset: remove the default spacing/box-sizing quirks every
+   browser applies, so our own spacing is predictable. */
+* {
+  box-sizing: border-box; /* padding/border are included IN the element's width, not added on top */
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth; /* clicking a nav link scrolls smoothly instead of jumping */
+}
+
+body {
+  background: var(--bg);
+  color: var(--chalk);
+  font-family: var(--font-body);
+  line-height: 1.6;       /* space between lines of text, for readability */
+  min-height: 100vh;       /* body is always at least the full screen height */
+  overflow-x: hidden;      /* prevents an accidental horizontal scrollbar */
+}
+
+/* Respect users who've asked their OS to reduce motion
+   (accessibility setting) — turn off animations for them. */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+a {
+  color: inherit; /* links don't get the default blue/purple browser color */
+}
+
+/* Visible focus ring when tabbing through the page with a
+   keyboard — important for accessibility, don't remove this. */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+textarea:focus-visible {
+  outline: 2px solid var(--amber);
+  outline-offset: 3px;
+}
+
+
+/* ------------------------------------------------------------
+   2. GLOBAL HELPERS
+   ------------------------------------------------------------
+   Small, reusable classes used on many different sections.
+   ------------------------------------------------------------ */
+
+/* .wrap centers content and stops it from stretching too wide
+   on big screens. Used inside almost every section. */
+.wrap {
+  max-width: 1080px;
+  margin: 0 auto;   /* auto left/right margin = horizontally centered */
+  padding: 0 24px;  /* breathing room on small screens */
+}
+
+/* The little "eyebrow" label above each section heading,
+   e.g. "about" / "skills" / "projects" in small amber text. */
+.eyebrow {
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  letter-spacing: 0.06em;
+  color: var(--amber);
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 18px;
+}
+.eyebrow::before {
+  /* the small square dot before the eyebrow text */
+  content: "";
+  width: 8px;
+  height: 8px;
+  background: var(--amber);
+  display: inline-block;
+  border-radius: 1px;
+}
+
+
+/* ------------------------------------------------------------
+   3. HEADER & TOP NAV
+   ------------------------------------------------------------
+   The sticky bar at the very top of the page: logo + nav links.
+   On mobile, the nav links wrap onto their own row underneath
+   the logo instead of disappearing (see the media query below).
+   ------------------------------------------------------------ */
+header {
+  background: rgba(15, 23, 32, 0.9); /* semi-transparent so blur shows through */
+  backdrop-filter: blur(8px);        /* frosted-glass effect on whatever scrolls behind it */
+  border-bottom: 1px solid var(--card-border);
+}
+
+.topbar {
+  display: flex;
+  flex-wrap: wrap;      /* lets the nav drop to a new line on narrow screens */
+  align-items: center;
+  gap: 16px;
+  padding-top: 16px;
+  padding-bottom: 16px;
+}
+
+.logo {
+  font-family: var(--font-mono);
+  font-weight: 600;
+  font-size: 1rem;
+  text-decoration: none;
+  flex-shrink: 0; /* never let the logo get squashed */
+}
+.logo span {
+  color: var(--amber); /* the "." in "rajesh.bist" */
+}
+
+/* Sub-bar directly under the header — holds the always-visible
+   hamburger button that opens the sidebar. */
+.subbar {
+  background: var(--bg);
+  border-bottom: 1px solid var(--card-border);
+}
+.subbar .wrap {
+  display: flex;
+  align-items: center;
+  padding-top: 12px;
+  padding-bottom: 12px;
+}
+.subbar-btn {
+  background: none;
+  border: 1px solid var(--card-border);
+  color: var(--chalk);
+  border-radius: 6px;
+  width: 42px;
+  height: 38px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  cursor: pointer;
+}
+.subbar-btn span {
+  /* one of the 3 lines that make up the hamburger icon */
+  width: 18px;
+  height: 2px;
+  background: var(--chalk);
+  display: block;
+}
+.subbar-btn:hover {
+  border-color: var(--amber);
+}
+.subbar-label {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  color: var(--chalk-dim);
+  margin-left: 12px;
+}
+
+/* The Home / About / Skills / Projects / Contact links.
+   By default (mobile-first) this is a full-width row that sits
+   BELOW the logo, wraps if needed, and has a divider line above it. */
+.top-nav {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 4px;
+  list-style: none;
+  width: 100%;
+  margin-top: 14px;
+  padding-top: 10px;
+  border-top: 1px solid var(--card-border);
+}
+.top-nav a {
+  text-decoration: none;
+  font-family: var(--font-mono);
+  font-weight: 600;
+  font-size: 0.82rem;
+  letter-spacing: 0.02em;
+  color: var(--chalk-dim);
+  padding: 8px 16px;
+  border-radius: 6px;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+.top-nav a:hover {
+  color: var(--chalk);
+  background: rgba(255, 255, 255, 0.05);
+}
+.top-nav a.active {
+  /* JS adds/removes the "active" class to mark the current page */
+  color: var(--amber);
+  background: rgba(255, 179, 71, 0.1);
+}
+
+/* --- Desktop and up (≥1024px) ---
+   There's finally enough room to fit the nav on the SAME row as
+   the logo, pushed to the right, so we undo the "full width, own
+   row" mobile/tablet styles from above. Below 1024px (phones AND
+   tablets) the nav stays wrapped underneath the logo — that's the
+   mobile-first default, so there's nothing to write for tablet. */
+@media (min-width: 1024px) {
+  .top-nav {
+    width: auto;
+    margin-top: 0;
+    padding-top: 0;
+    border-top: none;
+    margin-left: auto;      /* pushes the nav to the far right */
+    justify-content: flex-end;
+  }
+}
+
+
+/* ------------------------------------------------------------
+   4. SIDEBAR
+   ------------------------------------------------------------
+   A slide-out panel triggered by the hamburger button. It's
+   hidden off-screen to the left by default (translateX(-100%))
+   and slides into view when JS adds the "open" class.
+   ------------------------------------------------------------ */
+
+/* Dark overlay behind the sidebar that dims the rest of the
+   page and closes the sidebar when clicked. */
+.sidebar-overlay {
+  position: fixed;
+  inset: 0; /* shorthand for top/right/bottom/left: 0 — covers the whole screen */
+  background: rgba(0, 0, 0, 0.5);
+  opacity: 0;
+  pointer-events: none; /* invisible AND unclickable until "open" */
+  transition: opacity 0.25s ease;
+  z-index: 70;
+}
+.sidebar-overlay.open {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: 280px;
+  background: var(--sidebar-bg);
+  border-right: 1px solid var(--card-border);
+  transform: translateX(-100%); /* parked just off the left edge of the screen */
+  transition: transform 0.3s ease;
+  z-index: 80; /* sits above the overlay (70) */
+  display: flex;
+  flex-direction: column;
+  padding: 24px;
+}
+.sidebar.open {
+  transform: translateX(0); /* slides fully into view */
+}
+
+/* Top row of the sidebar — just the "✕" close button. */
+.sidebar-head {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  margin-bottom: 12px;
+}
+.sidebar-close {
+  background: none;
+  border: 1px solid var(--card-border);
+  color: var(--chalk);
+  border-radius: 6px;
+  width: 32px;
+  height: 32px;
+  cursor: pointer;
+  font-size: 1rem;
+}
+.sidebar-close:hover {
+  border-color: var(--amber);
+  color: var(--amber);
+}
+
+/* Profile card at the top of the sidebar: avatar + name + role. */
+.sidebar-profile {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding-bottom: 22px;
+  margin-bottom: 22px;
+  border-bottom: 1px solid var(--card-border); /* divider between profile and nav links */
+}
+.profile-avatar {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%; /* makes it a circle */
+  background: linear-gradient(135deg, var(--amber), var(--mint));
+  color: #1a1206;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center; /* centers the "RB" initials */
+  margin-bottom: 12px;
+  overflow: hidden; /* keeps a future <img> photo clipped to the circle */
+}
+.profile-avatar img {
+  /* If a real photo is added inside .profile-avatar later,
+     this makes it fill the circle without stretching. */
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.profile-name {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.05rem;
+  color: var(--chalk);
+  margin-bottom: 2px;
+}
+.profile-role {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  color: var(--mint);
+}
+
+/* The Home/About/Skills/Projects/Contact list inside the sidebar. */
+.sidebar-links {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.sidebar-links a {
+  text-decoration: none;
+  font-family: var(--font-mono);
+  font-size: 0.95rem;
+  color: var(--chalk-dim);
+  padding: 12px 14px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+.sidebar-links a::before {
+  /* Prints the "00", "01", "02"... numbers before each link.
+     The number itself comes from the data-num="00" attribute
+     in the HTML, not from here. */
+  content: attr(data-num);
+  color: var(--amber);
+  font-size: 0.78rem;
+}
+.sidebar-links a:hover {
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--chalk);
+}
+.sidebar-links a.active {
+  background: rgba(255, 179, 71, 0.1);
+  color: var(--amber);
+}
+
+/* Small text pinned to the bottom of the sidebar. */
+.sidebar-foot {
+  margin-top: auto; /* pushes this to the bottom of the flex column */
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--chalk-dim);
+  padding-top: 20px;
+  border-top: 1px solid var(--card-border);
+}
+
+
+/* ------------------------------------------------------------
+   5. PAGE SWITCHING
+   ------------------------------------------------------------
+   Only ONE .page is shown at a time. JavaScript adds the
+   "active" class to whichever page should currently be visible
+   and removes it from the rest. This is what makes the site
+   feel like separate pages while actually being one HTML file.
+   ------------------------------------------------------------ */
+.page {
+  display: none;
+  min-height: calc(100vh - 71px); /* fills the screen below the header */
+}
+.page.active {
+  display: block;
+  animation: fadein 0.35s ease; /* gentle fade + slide-up when a page appears */
+}
+@keyframes fadein {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+
+/* ------------------------------------------------------------
+   6. HOME PAGE
+   ------------------------------------------------------------ */
+.hero {
+  padding: 90px 0 80px;
+}
+.hero-grid {
+  display: grid;
+  grid-template-columns: 1fr; /* mobile default: hero text stacked above the build-log card */
+  gap: 48px;
+  align-items: center;
+}
+.hero h1 {
+  font-family: var(--font-display);
+  /* clamp(min, preferred, max): the font size scales with the
+     viewport but never goes below 2.2rem or above 3.6rem. */
+  font-size: clamp(2.2rem, 5vw, 3.6rem);
+  line-height: 1.08;
+  font-weight: 700;
+  margin-bottom: 20px;
+}
+.hero h1 .accent {
+  color: var(--amber); /* highlights "in training." */
+}
+.hero p.lede {
+  font-size: 1.05rem;
+  color: var(--chalk-dim);
+  max-width: 46ch; /* keeps the paragraph from stretching too wide to read comfortably */
+  margin-bottom: 32px;
+}
+.hero-ctas {
+  display: flex;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+/* Reusable button styles, used for "See projects" / "Get in touch" etc. */
+.btn {
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  padding: 13px 22px;
+  border-radius: 6px;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: transform 0.15s ease, background 0.15s ease, border-color 0.15s ease;
+}
+.btn:hover {
+  transform: translateY(-2px); /* small "lift" on hover */
+}
+.btn-primary {
+  background: var(--amber);
+  color: #1a1206;
+  font-weight: 600;
+}
+.btn-primary:hover {
+  background: #ffc266;
+}
+.btn-ghost {
+  border-color: var(--card-border);
+  color: var(--chalk);
+}
+.btn-ghost:hover {
+  border-color: var(--amber);
+  color: var(--amber);
+}
+
+/* The "build-log.txt" card on the home page showing progress bars. */
+.buildlog {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 10px;
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  overflow: hidden;
+}
+.buildlog-head {
+  /* the fake "window title bar" with red/yellow/green dots */
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--card-border);
+  color: var(--chalk-dim);
+}
+.dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  display: inline-block;
+}
+.dot.red { background: #e5645a; }
+.dot.yellow { background: #e8c15a; }
+.dot.green { background: #6fce8f; }
+
+.buildlog-body {
+  padding: 18px 20px;
+}
+.log-row {
+  /* one row = a skill name, a progress bar, and a status label */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 14px;
+  gap: 12px;
+}
+.log-row:last-child {
+  margin-bottom: 0;
+}
+.log-bar {
+  flex: 1; /* the bar stretches to fill the space between name and status */
+  height: 6px;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 3px;
+  overflow: hidden;
+  margin: 0 12px;
+}
+.log-fill {
+  /* the colored part of the bar — its width is set inline in
+     the HTML (style="width:80%") to control how "full" it looks */
+  height: 100%;
+  border-radius: 3px;
+  background: var(--mint);
+}
+.log-fill.partial { background: var(--amber); }
+.log-fill.queued { background: rgba(255, 255, 255, 0.18); }
+.log-status {
+  color: var(--chalk-dim);
+  font-size: 0.78rem;
+  white-space: nowrap; /* stops "in progress" from wrapping to 2 lines */
+}
+
+/* --- Desktop and up (≥1024px) ---
+   There's enough width now to put the hero text and the
+   build-log card side by side instead of stacked. */
+@media (min-width: 1024px) {
+  .hero-grid {
+    grid-template-columns: 1.2fr 0.8fr; /* text column a bit wider than the build-log card */
+  }
+}
+
+/* Shared padding for every section below the hero (About,
+   Skills, Projects, Contact all use .page-section). */
+.page-section {
+  padding: 70px 0 90px;
+}
+.section-head {
+  margin-bottom: 44px;
+}
+.section-head h2 {
+  font-family: var(--font-display);
+  font-size: clamp(1.6rem, 3vw, 2.1rem);
+  font-weight: 600;
+}
+
+
+/* ------------------------------------------------------------
+   7. ABOUT PAGE
+   ------------------------------------------------------------ */
+.about-grid {
+  display: grid;
+  grid-template-columns: 1fr; /* mobile default: text, then quick-facts, stacked */
+  gap: 48px;
+}
+.about-grid p {
+  color: var(--chalk-dim);
+  margin-bottom: 16px;
+}
+.about-grid p:last-child {
+  margin-bottom: 0;
+}
+.about-facts {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+.fact {
+  border-left: 2px solid var(--amber); /* small accent line, like a quote */
+  padding-left: 16px;
+}
+.fact-k {
+  /* the "// currently" style label above each fact */
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--amber);
+  letter-spacing: 0.04em;
+}
+.fact-v {
+  font-size: 0.98rem;
+  margin-top: 4px;
+}
+
+/* --- Tablet and up (≥640px) ---
+   Enough width to put the text and the quick-facts side by side. */
+@media (min-width: 640px) {
+  .about-grid {
+    grid-template-columns: 1fr 1fr; /* text on the left, quick-facts on the right */
+  }
+}
+
+
+/* ------------------------------------------------------------
+   8. SKILLS PAGE
+   ------------------------------------------------------------ */
+.skills-grid {
+  display: grid;
+  /* auto-fit + minmax = "as many 220px-minimum columns as will
+     fit, and stretch them to fill the row" — a simple responsive
+     grid without writing a single media query. */
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 16px;
+}
+.skill-card {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 8px;
+  padding: 20px;
+}
+.skill-card .skill-name {
+  font-family: var(--font-mono);
+  font-weight: 600;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+.skill-tag {
+  /* the small pill: "learned" / "learning" / "queued" */
+  font-size: 0.68rem;
+  font-family: var(--font-mono);
+  padding: 3px 8px;
+  border-radius: 4px;
+  border: 1px solid;
+}
+.skill-tag.learned { color: var(--mint); border-color: var(--mint); }
+.skill-tag.learning { color: var(--amber); border-color: var(--amber); }
+.skill-tag.queued { color: var(--chalk-dim); border-color: var(--card-border); }
+.skill-card p {
+  color: var(--chalk-dim);
+  font-size: 0.9rem;
+}
+
+
+/* ------------------------------------------------------------
+   9. PROJECTS PAGE
+   ------------------------------------------------------------ */
+.projects-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 20px;
+}
+.project-card {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 10px;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  min-height: 220px;
+}
+.project-card.draft {
+  /* styling for the "coming soon" placeholder cards */
+  border-style: dashed;
+  justify-content: center;
+  align-items: flex-start;
+  opacity: 0.75;
+}
+.project-tag {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  color: var(--amber);
+  margin-bottom: 12px;
+}
+.project-card.draft .project-tag {
+  color: var(--chalk-dim);
+}
+.project-card h3 {
+  font-family: var(--font-display);
+  font-size: 1.15rem;
+  margin-bottom: 10px;
+}
+.project-card p {
+  color: var(--chalk-dim);
+  font-size: 0.92rem;
+  flex-grow: 1; /* pushes .project-links down to the bottom of the card */
+}
+.project-links {
+  display: flex;
+  gap: 14px;
+  margin-top: 16px;
+}
+.project-links a {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  text-decoration: none;
+  color: var(--mint);
+  border-bottom: 1px solid transparent;
+}
+.project-links a:hover {
+  border-bottom-color: var(--mint); /* underline appears on hover */
+}
+
+
+/* ------------------------------------------------------------
+   10. CONTACT PAGE
+   ------------------------------------------------------------ */
+.contact-grid {
+  display: grid;
+  grid-template-columns: 1fr; /* mobile default: contact info, then form, stacked */
+  gap: 48px;
+}
+.contact-info p {
+  color: var(--chalk-dim);
+  margin-bottom: 24px;
+}
+.contact-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.contact-list a {
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--font-mono);
+  font-size: 0.92rem;
+  color: var(--chalk);
+  transition: color 0.2s ease;
+}
+.contact-list a:hover {
+  color: var(--amber);
+}
+.contact-list .k {
+  /* the "email" / "github" / "linkedin" labels */
+  color: var(--amber);
+}
+
+/* The contact form itself. */
+form.contact-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.field label {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--chalk-dim);
+  margin-bottom: 6px;
+}
+.field input,
+.field textarea {
+  width: 100%;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--card-border);
+  border-radius: 6px;
+  padding: 12px 14px;
+  color: var(--chalk);
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  resize: vertical; /* users can only resize the textarea up/down, not sideways */
+}
+.field textarea {
+  min-height: 120px;
+}
+.field input::placeholder,
+.field textarea::placeholder {
+  color: rgba(238, 242, 247, 0.35);
+}
+
+/* Feedback message shown after submitting the form
+   (styled by script.js adding .ok or .err). */
+.form-status {
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  min-height: 1.2em; /* reserves space so the layout doesn't jump when the message appears */
+}
+.form-status.ok { color: var(--mint); }   /* success message */
+.form-status.err { color: #e5645a; }      /* error message */
+
+/* --- Tablet and up (≥640px) ---
+   Enough width to put the contact info and the form side by side. */
+@media (min-width: 640px) {
+  .contact-grid {
+    grid-template-columns: 1fr 1fr; /* contact info on the left, form on the right */
+  }
+}
+
+
+/* ------------------------------------------------------------
+   11. FOOTER
+   ------------------------------------------------------------ */
+footer {
+  border-top: 1px solid var(--card-border);
+  padding: 28px 0;
+  text-align: center;
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  color: var(--chalk-dim);
+}
